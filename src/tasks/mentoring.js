@@ -272,52 +272,63 @@ async function execute(page) {
             });
             await new Promise(r => setTimeout(r, 4000));
 
-            // Go back to the mentee list to initiate DOWNLOAD
-            await page.goto(listUrl, { waitUntil: 'networkidle2' });
+            // Navigate to Student Mentoring Info page to initiate DOWNLOAD
+            const mentoringInfoUrl = `https://ums.paruluniversity.ac.in/AdminPanel/Mentoring/MEN_StudentMentoring/MEN_StudentMentoringInfo.aspx?StudentID=${studentInfo.studentId}`;
+            console.log(`Navigating to Mentoring Info page to download report: ${mentoringInfoUrl}`);
+            await page.goto(mentoringInfoUrl, { waitUntil: 'networkidle2' });
 
-            console.log('Triggering PDF Download...');
+            console.log('Triggering PDF Download from the recent mentoring table...');
 
             // Get current files in download dir
             const initialFiles = fs.readdirSync(downloadPath);
 
-            // Click download button (3rd anchor tag)
-            await page.evaluate((rowIndex) => {
-                const node = document.evaluate(`/html/body/form/div[5]/div[2]/div/div/div[2]/div/div[3]/div[2]/div/div/div[2]/div/div/div[1]/div/div[2]/table/tbody/tr[${rowIndex}]/td[11]/a[3]`, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-                if (node) node.click();
-            }, i);
-
-            // Polling for the new file to appear and finish downloading
-            let downloadedFile = null;
-            let retries = 0;
-            while (retries < 20) {
-                await new Promise(r => setTimeout(r, 1000));
-                const currentFiles = fs.readdirSync(downloadPath);
-                const newFiles = currentFiles.filter(f => !initialFiles.includes(f));
-
-                if (newFiles.length > 0) {
-                    const candidate = newFiles[0];
-                    // Ensure it's not a temp chrome download file ending in .crdownload
-                    if (!candidate.endsWith('.crdownload')) {
-                        downloadedFile = candidate;
-                        break;
-                    }
+            // Click download button (1st row, 7th column, 1st anchor tag)
+            const downloadClicked = await page.evaluate(() => {
+                const xpath = "/html/body/form/div[5]/div[2]/div/div/div[2]/div/div[3]/div[2]/div[2]/div/div[2]/div/div[2]/div[2]/div/div/div/div[2]/table/tbody/tr[1]/td[7]/a[1]";
+                const node = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                if (node) {
+                    node.click();
+                    return true;
                 }
-                retries++;
-            }
+                return false;
+            });
 
-            if (downloadedFile) {
-                // Rename file
-                // Make name filesystem safe
-                const safeName = studentInfo.studentName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-                const newFileName = `${studentInfo.enrollmentNo}-${safeName}.pdf`;
+            if (downloadClicked) {
+                // Polling for the new file to appear and finish downloading
+                let downloadedFile = null;
+                let retries = 0;
+                while (retries < 20) {
+                    await new Promise(r => setTimeout(r, 1000));
+                    const currentFiles = fs.readdirSync(downloadPath);
+                    const newFiles = currentFiles.filter(f => !initialFiles.includes(f));
 
-                const oldPath = path.join(downloadPath, downloadedFile);
-                const newPath = path.join(downloadPath, newFileName);
+                    if (newFiles.length > 0) {
+                        const candidate = newFiles[0];
+                        // Ensure it's not a temp chrome download file ending in .crdownload
+                        if (!candidate.endsWith('.crdownload')) {
+                            downloadedFile = candidate;
+                            break;
+                        }
+                    }
+                    retries++;
+                }
 
-                fs.renameSync(oldPath, newPath);
-                console.log(`Successfully downloaded and renamed: ${newFileName}`);
+                if (downloadedFile) {
+                    // Rename file
+                    // Make name filesystem safe
+                    const safeName = studentInfo.studentName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                    const newFileName = `${studentInfo.enrollmentNo}-${safeName}.pdf`;
+
+                    const oldPath = path.join(downloadPath, downloadedFile);
+                    const newPath = path.join(downloadPath, newFileName);
+
+                    fs.renameSync(oldPath, newPath);
+                    console.log(`Successfully downloaded and renamed: ${newFileName}`);
+                } else {
+                    console.warn('PDF download timed out or failed to trigger.');
+                }
             } else {
-                console.warn('PDF download timed out or failed to trigger.');
+                console.warn('Could not find the download button on the Mentoring Info page. Skipped downloading.');
             }
 
         } else {
