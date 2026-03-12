@@ -1,0 +1,9 @@
+node_modules/
+.env
+*.log
+execution_log.txt
+execution_log_utf8.txt
+timetable_debug.html
+error_dump.html
+error_screenshot.png
+.DS_Store
