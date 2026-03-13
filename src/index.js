@@ -28,9 +28,13 @@ async function main() {
                 const fillAttendanceTask = require('./tasks/fillAttendance');
                 await fillAttendanceTask.execute(page);
                 break;
+            case 'mentoring':
+                const mentoringTask = require('./tasks/mentoring');
+                await mentoringTask.execute(page);
+                break;
             default:
                 console.error(`Unknown task: ${taskName}`);
-                console.error('Available tasks: fill-attendance');
+                console.error('Available tasks: fill-attendance, mentoring');
                 break;
         }
 
