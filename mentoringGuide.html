@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIS Mentoring Automation Guide — Parul University</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-alt: #0b1220;
+      --border: #334155;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.14);
+      --success: #34d399;
+      --warning: #fbbf24;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0.6rem 0 0.4rem;
+      font-size: 1.95rem;
+      color: #f8fafc;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+      font-size: 1rem;
+    }
+    h2 {
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      font-size: 1.3rem;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    h3 {
+      margin-top: 1.4rem;
+      margin-bottom: 0.5rem;
+      font-size: 1.05rem;
+      color: var(--accent);
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.3rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1rem;
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-right: 0.45rem;
+    }
+    pre {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.1rem;
+      overflow-x: auto;
+      font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
+      font-size: 0.86rem;
+      color: #e2e8f0;
+      margin: 0.6rem 0 0;
+      position: relative;
+    }
+    .code-wrap {
+      position: relative;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 0.55rem;
+      right: 0.55rem;
+      background: #1e293b;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .copy-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.7rem;
+      font-size: 0.9rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.65rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      color: var(--accent);
+      background: rgba(15, 23, 42, 0.55);
+      font-weight: 600;
+    }
+    code.inline {
+      background: rgba(148, 163, 184, 0.16);
+      padding: 0.12rem 0.4rem;
+      border-radius: 5px;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.86em;
+      color: #7dd3fc;
+    }
+    .callout {
+      border-left: 4px solid var(--warning);
+      background: rgba(251, 191, 36, 0.08);
+      padding: 0.85rem 1.1rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      font-size: 0.92rem;
+    }
+    .callout-success {
+      border-left-color: var(--success);
+      background: rgba(52, 211, 153, 0.08);
+    }
+    ul, ol {
+      padding-left: 1.35rem;
+      margin: 0.4rem 0;
+    }
+    li { margin-bottom: 0.35rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge">Parul University MIS Automation</span>
+      <h1>Mentoring Automation System — Execution Guide</h1>
+      <p class="subtitle">Two-Phase Excel-Driven Workflow: Data Extraction &rarr; Excel Review &rarr; V2 Form Submission &rarr; PDF Report Download</p>
+    </header>
+
+    <h2>1. Project Directory Structure</h2>
+    <div class="card">
+      <p>All commands must be executed from the working directory: <code class="inline">C:\Users\ritya\OneDrive\Desktop\AY26-27\misAutomate\misAutomate_python</code></p>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy Path</button>
+        <pre>C:\Users\ritya\OneDrive\Desktop\AY26-27\misAutomate\misAutomate_python</pre>
+      </div>
+      <pre>misAutomate_python/
+├── .env                        # MIS &amp; Gmail IMAP credentials (PORTAL_USER, PORTAL_PASS, EMAIL_USER, EMAIL_PASS)
+├── main.py                     # CLI entry point (handles browser init, login, OTP &amp; task routing)
+├── mentoring.json              # Base configuration (startDate, nextMentoringDays, agenda, remarks)
+├── mentoring_plan.xlsx         # Generated Excel workbook with dropdowns &amp; locked text formats
+├── mentoringGuide.html         # This execution &amp; reference guide
+├── requirements.txt            # Python dependencies (playwright, python-dotenv, openpyxl)
+├── downloads/                  # Output folder for UPPERCASE PDF reports (ENROLLMENT-STUDENT_NAME.pdf)
+└── src/
+    ├── auth.py                 # Automated MIS login + Gmail IMAP OTP verification
+    ├── browser.py              # Playwright Chromium lifecycle wrapper
+    ├── gmail.py                # Real-time Gmail OTP extractor
+    └── tasks/
+        ├── fill_attendance.py  # Attendance automation task
+        └── mentoring.py        # Two-phase Mentoring V2 wizard + Excel + PDF downloader</pre>
+    </div>
+
+    <h2>2. Workflow Architecture Overview</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3><span class="step-num">1</span>Phase 1: Prepare Excel Plan (<code class="inline">--prepare</code>)</h3>
+        <ul>
+          <li>Logs into MIS via Gmail OTP.</li>
+          <li>Scrapes all mentees across pages and fetches each student's live <strong>Attendance %</strong> &amp; <strong>Gender</strong>.</li>
+          <li>Inspects live V2 form questions and generates <code class="inline">mentoring_plan.xlsx</code> with <strong>Excel dropdown lists</strong> and <strong>locked <code class="inline">@</code> text date formats</strong>.</li>
+          <li>Sets optional/new mandatory fields (such as <code class="inline">specialRemarksForHOD</code>, <code class="inline">specialRemarksForMentor</code>, <code class="inline">otherRemarks</code>) to <code class="inline">NA</code> by default.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="step-num">2</span>Phase 2: Submit &amp; Download (<code class="inline">--submit</code>)</h3>
+        <ul>
+          <li>Reads reviewed rows from <code class="inline">mentoring_plan.xlsx</code>.</li>
+          <li>Selects any pending scheduled meeting automatically if present on the portal.</li>
+          <li>Fills <strong>Tab 1 (Meeting Details)</strong> &rarr; clicks <em>Save &amp; Next Step</em> &rarr; verifies server response.</li>
+          <li>Fills <strong>Tab 2 (Questions Details)</strong> &rarr; clicks <em>Save</em> &rarr; downloads the PDF report in <strong>UPPERCASE</strong> to <code class="inline">downloads/</code> and marks <code class="inline">SUBMITTED_AND_DOWNLOADED</code> in Excel.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>3. Pre-Run Configuration (<code class="inline">mentoring.json</code>)</h2>
+    <div class="card">
+      <p>Before starting a new mentoring cycle, update <code class="inline">mentoring.json</code> with your session date and default remarks:</p>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy JSON</button>
+        <pre>{
+  "startDate": "07-10-2026 09:00 AM",
+  "nextMentoringDays": 71,
+  "intervalMinutes": 10,
+  "attendanceStatus": "Present",
+  "parentPresent": false,
+  "questionGroup": "Group-1 - PIP",
+  "agenda": "Academic Development and Future Readiness",
+  "issuesDiscussed": "Balancing coursework with skill development and career exploration.",
+  "studentsOpinion": "Found the session helpful and clarifying.",
+  "mentorsOpinion": "Student demonstrates good potential and would benefit from structured planning.",
+  "suggestions": "Set weekly study goals, seek regular feedback, and explore internships or skill-building workshops.",
+  "specialRemarksForHOD": "NA",
+  "specialRemarksForMentor": "NA",
+  "otherRemarks": "NA"
+}</pre>
+      </div>
+      <div class="callout">
+        <strong>Important Date Rule:</strong> <code class="inline">nextMentoringDate</code> is automatically calculated as a future date (<code class="inline">max(dateOfMentoring, today) + nextMentoringDays</code>) so the MIS portal never rejects it for being in the past. Always keep the <code class="inline">DD-MM-YYYY HH:MM AM/PM</code> format if editing dates in Excel.
+      </div>
+    </div>
+
+    <h2>4. Execution Commands — Option A: Via Terminal (PowerShell / CMD)</h2>
+    <div class="card">
+      <h3>Step 0: Open Terminal &amp; Navigate to Project Directory</h3>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre>cd "C:\Users\ritya\OneDrive\Desktop\AY26-27\misAutomate\misAutomate_python"</pre>
+      </div>
+
+      <h3>Step 1: Run Phase 1 — Extract Mentees &amp; Generate <code class="inline">mentoring_plan.xlsx</code></h3>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre>python main.py mentoring --prepare</pre>
+      </div>
+
+      <h3>Step 2: Review &amp; Modify <code class="inline">mentoring_plan.xlsx</code></h3>
+      <ul>
+        <li>Open <code class="inline">mentoring_plan.xlsx</code> in Excel or LibreOffice Calc.</li>
+        <li>Use the built-in cell dropdowns for <code class="inline">attendanceStatus</code>, <code class="inline">learnerType</code>, <code class="inline">stressLevel</code>, <code class="inline">parentPresent</code>, and multiple-choice questions (<code class="inline">Q1</code>, <code class="inline">Q8</code>, <code class="inline">Q9</code>).</li>
+        <li>Edit any remarks (<code class="inline">specialRemarksForHOD</code>, <code class="inline">specialRemarksForMentor</code>, <code class="inline">otherRemarks</code>) or question answers as required, then <strong>Save and Close</strong> the workbook before running Phase 2.</li>
+      </ul>
+
+      <h3>Step 3: Run Phase 2 — Fill MIS Forms &amp; Download UPPERCASE PDFs</h3>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre>python main.py mentoring --submit</pre>
+      </div>
+
+      <h3>Optional Utility Commands</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="inline">python main.py mentoring</code></td>
+            <td>Interactive all-in-one mode: runs <code class="inline">--prepare</code>, pauses in terminal until you press <kbd>ENTER</kbd> after editing Excel, then runs <code class="inline">--submit</code>.</td>
+          </tr>
+          <tr>
+            <td><code class="inline">python main.py mentoring --download-only</code></td>
+            <td>Skips form submission and re-downloads all mentoring PDF reports listed in <code class="inline">mentoring_plan.xlsx</code> into <code class="inline">downloads/</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>5. Execution Commands — Option B: Via Jupyter Notebook</h2>
+    <div class="card">
+      <p>Because Jupyter Notebook on Windows runs inside an interactive event loop, execute <code class="inline">main.py</code> via <code class="inline">subprocess.Popen</code> in separate cells so live logs stream cleanly without event-loop conflicts.</p>
+
+      <h3>Jupyter Cell 1: Run Phase 1 (<code class="inline">--prepare</code>) &amp; Preview Generated Excel</h3>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy Cell 1</button>
+        <pre>import os
+import subprocess
+import sys
+from pathlib import Path
+import openpyxl
+
+workdir = Path(r"C:\Users\ritya\OneDrive\Desktop\AY26-27\misAutomate\misAutomate_python")
+os.chdir(workdir)
+
+env = os.environ.copy()
+env["PYTHONIOENCODING"] = "utf-8"
+
+process = subprocess.Popen(
+    [sys.executable, "-u", "main.py", "mentoring", "--prepare"],
+    cwd=str(workdir),
+    env=env,
+    stdout=subprocess.PIPE,
+    stderr=subprocess.STDOUT,
+    text=True,
+    encoding="utf-8",
+    errors="replace",
+)
+
+for line in process.stdout:
+    print(line, end="", flush=True)
+
+rc = process.wait()
+print(f"\nPhase 1 exited with return code: {rc}")
+
+wb = openpyxl.load_workbook(workdir / "mentoring_plan.xlsx")
+ws = wb["Mentoring_Plan"]
+headers = [c.value for c in ws[1]]
+cols = ["enrollmentNo", "studentName", "attendance", "dateOfMentoring", "nextMentoringDate", "agenda"]
+idxs = [headers.index(c) for c in cols if c in headers]
+for r in ws.iter_rows(min_row=2, max_row=6, values_only=True):
+    print({headers[i]: r[i] for i in idxs})</pre>
+      </div>
+
+      <div class="callout callout-success">
+        <strong>Pause Between Cells:</strong> Open <code class="inline">mentoring_plan.xlsx</code>, review or modify any answers, <strong>save &amp; close</strong> the Excel file, and then run Cell 2 below.
+      </div>
+
+      <h3>Jupyter Cell 2: Run Phase 2 (<code class="inline">--submit</code>) &amp; Verify Downloaded PDFs</h3>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy Cell 2</button>
+        <pre>import os
+import subprocess
+import sys
+from pathlib import Path
+import openpyxl
+
+workdir = Path(r"C:\Users\ritya\OneDrive\Desktop\AY26-27\misAutomate\misAutomate_python")
+os.chdir(workdir)
+
+env = os.environ.copy()
+env["PYTHONIOENCODING"] = "utf-8"
+
+process = subprocess.Popen(
+    [sys.executable, "-u", "main.py", "mentoring", "--submit"],
+    cwd=str(workdir),
+    env=env,
+    stdout=subprocess.PIPE,
+    stderr=subprocess.STDOUT,
+    text=True,
+    encoding="utf-8",
+    errors="replace",
+)
+
+for line in process.stdout:
+    print(line, end="", flush=True)
+
+rc = process.wait()
+print(f"\nPhase 2 exited with return code: {rc}")
+
+downloads = sorted((workdir / "downloads").glob("*.pdf"))
+print(f"\nTotal PDFs in downloads/ ({len(downloads)}):")
+for pdf in downloads:
+    print(f"  - {pdf.name} ({pdf.stat().st_size:,} bytes)")</pre>
+      </div>
+    </div>
+
+    <h2>6. Troubleshooting Quick Reference</h2>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Symptom</th>
+            <th>Cause &amp; Resolution</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="inline">PermissionError</code> when running <code class="inline">--prepare</code> or <code class="inline">--submit</code></td>
+            <td><code class="inline">mentoring_plan.xlsx</code> is still open in Excel/Calc (look for <code class="inline">.~lock.mentoring_plan.xlsx#</code>). Close the spreadsheet window and re-run.</td>
+          </tr>
+          <tr>
+            <td><em>"You have already done mentoring meeting 10 minutes before/after"</em></td>
+            <td>A mentoring session already exists within &plusmn;10 minutes of <code class="inline">dateOfMentoring</code> for that student. Adjust <code class="inline">dateOfMentoring</code> in Excel and re-run <code class="inline">--submit</code>.</td>
+          </tr>
+          <tr>
+            <td><em>"Next Mentoring meeting date must be set to a future date"</em></td>
+            <td><code class="inline">nextMentoringDate</code> must be strictly later than the current date/time. Ensure it is in <code class="inline">DD-MM-YYYY HH:MM AM/PM</code> format and in the future.</td>
+          </tr>
+          <tr>
+            <td>Resume an interrupted <code class="inline">--submit</code> run</td>
+            <td>Rows already completed are marked <code class="inline">SUBMITTED_AND_DOWNLOADED</code> in the <code class="inline">status</code> column of <code class="inline">mentoring_plan.xlsx</code> and will be skipped automatically on re-run.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function copyCode(btn) {
+      const pre = btn.parentElement.querySelector("pre");
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = "Copied!";
+        setTimeout(() => { btn.innerText = orig; }, 1600);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# Secrets & Credentials
+.env
+
+# Generated plans, lock files & downloaded PDF reports
+downloads/
+*.xlsx
+*.csv
+.~lock.*
+
+# Python & IDE caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.vscode/
+.idea/

@@ -1,0 +1,16 @@
+{
+  "startDate": "07-10-2026 09:00 AM",
+  "nextMentoringDays": 71,
+  "intervalMinutes": 10,
+  "attendanceStatus": "Present",
+  "parentPresent": false,
+  "questionGroup": "Group-1 - PIP",
+  "agenda": "Academic Development and Future Readiness",
+  "issuesDiscussed": "Balancing coursework with skill development and career exploration.",
+  "studentsOpinion": "Found the session helpful and clarifying.",
+  "mentorsOpinion": "Student demonstrates good potential and would benefit from structured planning.",
+  "suggestions": "Set weekly study goals, seek regular feedback, and explore internships or skill-building workshops.",
+  "specialRemarksForHOD": "NA",
+  "specialRemarksForMentor": "NA",
+  "otherRemarks": "NA"
+}
